@@ -1,0 +1,31 @@
+[
+    {
+        "id": "temperature",
+        "title": "Monthly Average Temperature",
+        "titlePosition": "in",
+        "vAxis": {
+            "title": "Temperature (°C)"
+        },
+        width: "400px"
+    },
+    
+    {
+        "id": "temperature1",
+        "title": "Monthly Average Temperature",
+        "titlePosition": "in",
+        "vAxis": {
+            "title": "Temperature (°C)"
+        },
+        width: "400px"
+    },
+    
+    {
+        "id": "temperature2",
+        "title": "Monthly Average Temperature",
+        "titlePosition": "in",
+        "vAxis": {
+            "title": "Temperature (°C)"
+        },
+        width: "400px"
+    }
+]
