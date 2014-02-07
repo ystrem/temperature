@@ -26,12 +26,13 @@ def read_temp():
         temp_string = lines[1][equals_pos+2:]
         temp_c = float(temp_string) / 1000.0
         
-        return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()), temp_c
+        return str(time.strftime('%Y-%m-%d %H:%M:%S ,', time.localtime()) + str(temp_c) + '\n')
 	
 if __name__ == '__main__':
-	
+
+	print read_temp()	
 	with open('temperature.log','w') as f:
-		f.write(read_temp)
+		f.writelines(read_temp())
 	
 	
 	
