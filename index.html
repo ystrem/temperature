@@ -1,0 +1,21 @@
+<html>
+<head>
+<script type="text/javascript"
+  src="dygraph-combined.js"></script>
+</head>
+<body>
+<div id="graphdiv3"></div>
+<script type="text/javascript">
+  g3 = new Dygraph(
+    document.getElementById("graphdiv3"),
+    "temp.log",
+    {
+      title: 'KITCHEN',
+      rollPeriod: 7,
+      showRoller: true,
+      ylabel: 'Temperature (C)'
+    }
+  );
+</script>
+</body>
+</html>
