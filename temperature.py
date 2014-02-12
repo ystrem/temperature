@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 import os
 import glob
 import time
@@ -5,35 +6,32 @@ import time
 
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
- 
+
+thermometers = ['28-0000035ac85e', '28-0000035ac8a7', '28-0000035acb40']
+temperatures = []
 base_dir = '/sys/bus/w1/devices/'
-device_folder = glob.glob(base_dir + '28*')[0]
-device_file = device_folder + '/w1_slave'
- 
-def read_temp_raw():
-    f = open(device_file, 'r')
-    lines = f.readlines()
-    f.close()
-    return lines
- 
-def read_temp():
-    lines = read_temp_raw()
-    while lines[0].strip()[-3:] != 'YES':
-        time.sleep(0.2)
-        lines = read_temp_raw()
-    equals_pos = lines[1].find('t=')
-    if equals_pos != -1:
-        temp_string = lines[1][equals_pos+2:]
-        temp_c = float(temp_string) / 1000.0
-        
-        return str(time.strftime('%Y-%m-%d %H:%M:%S ,', time.localtime()) + str(temp_c) + '\n')
+device_file = '/w1_slave'
+
+def temperature():
+	for thermometer in thermometers:
+		with open(base_dir + thermometer + device_file) as f:
+			lines = f.readlines()
+			temp =  [line.split() for line in lines ]
+			#print 'Temp:', temp
+			if 'YES' in temp[0]:
+				temperature = float(temp[1][-1][2:]) / 1000
+				temperatures.append(temperature)
+			f.close()
+			print 'File is closed = ', f.closed
+	print temperatures
+			#print 'Lines', lines			
+	
+	with open('temp.log', 'a') as f:
+		print time.strftime('%Y-%m-%d %H:%M:%S ,', time.localtime()) + str('%s , %s , %s' %(temperatures[0], temperatures[1], temperatures[2]) )
+		f.writelines(str(time.strftime('%Y-%m-%d %H:%M:%S ,', time.localtime()) + str('%s, %s, %s' %(temperatures[0], temperatures[1], temperatures[2]))) + '\n' )
+		f.close()
+		print 'File is closed = ', f.closed
+
 	
 if __name__ == '__main__':
-
-	print read_temp()	
-	with open('temperature.log','w') as f:
-		f.writelines(read_temp())
-	
-	
-	
-	
+	temperature()
