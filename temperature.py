@@ -14,7 +14,7 @@ device_file = '/w1_slave'
 
 def temperature():
 	for thermometer in thermometers:
-		with open(base_dir + thermometer + device_file) as f:
+		with open(base_dir + thermometer + device_file,'r') as f:
 			lines = f.readlines()
 			temp =  [line.split() for line in lines ]
 			#print 'Temp:', temp
@@ -26,7 +26,7 @@ def temperature():
 	print temperatures
 			#print 'Lines', lines			
 	
-	with open('temp.log', 'a') as f:
+	with open('/home/pi/temperature/temp.log', 'a') as f:
 		print time.strftime('%Y-%m-%d %H:%M:%S ,', time.localtime()) + str('%s , %s , %s' %(temperatures[0], temperatures[1], temperatures[2]) )
 		f.writelines(str(time.strftime('%Y-%m-%d %H:%M:%S ,', time.localtime()) + str('%s, %s, %s' %(temperatures[0], temperatures[1], temperatures[2]))) + '\n' )
 		f.close()
