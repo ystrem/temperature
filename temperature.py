@@ -2,7 +2,7 @@
 import os
 import glob
 import time
-
+import sqllite3 as lite
 
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
@@ -12,7 +12,19 @@ temperatures = []
 base_dir = '/sys/bus/w1/devices/'
 device_file = '/w1_slave'
 
+def saveToDB(data):
+	con = lite.connect('temp.db')
+	
+	with con :
+		cur = con.cursor()
+		
+		cur.execute("CREATE TABLE IF NOT EXISTS Temperatures(Date TEXT, Inside TEXT, Outside TEXT)")
+		cur.execute("INSERT INTO Temperatures(Date, Inside, Outside) VALUES(?, ?, ?)", data)
+		
+		con.commit()
+
 def temperature():
+	temperatures.append(str(time.strftime('%Y-%m-%d %H:%M:%S ,', time.localtime())))
 	for thermometer in thermometers:
 		with open(base_dir + thermometer + device_file,'r') as f:
 			lines = f.readlines()
@@ -23,15 +35,9 @@ def temperature():
 				temperatures.append(temperature)
 			f.close()
 			print 'File is closed = ', f.closed
-	print temperatures
-			#print 'Lines', lines			
-	
-	with open('/home/pi/temperature/temp.log', 'a') as f:
-		print time.strftime('%Y-%m-%d %H:%M:%S ,', time.localtime()) + str('%s , %s , %s' %(temperatures[0], temperatures[1], temperatures[2]) )
-		f.writelines(str(time.strftime('%Y-%m-%d %H:%M:%S ,', time.localtime()) + str('%s, %s, %s' %(temperatures[0], temperatures[1], temperatures[2]))) + '\n' )
-		f.close()
-		print 'File is closed = ', f.closed
-
-	
+		
+	return temperatures
+		
 if __name__ == '__main__':
-	temperature()
+	saveToDB(temperature())
+	
