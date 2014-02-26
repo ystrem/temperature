@@ -4,13 +4,13 @@ import glob
 import time
 import sqlite3 as lite
 
-#os.system('modprobe w1-gpio')
-#os.system('modprobe w1-therm')
+os.system('modprobe w1-gpio')
+os.system('modprobe w1-therm')
 
-#thermometers = ['28-0000035ac85e','28-0000035acb40']
-#temperatures = []
-#base_dir = '/sys/bus/w1/devices/'
-#device_file = '/w1_slave'
+thermometers = ['28-0000035ac85e','28-0000035acb40']
+temperatures = []
+base_dir = '/sys/bus/w1/devices/'
+device_file = '/w1_slave'
 DB_NAME = 't.db'
 FILE_NAME = "t.log"
 
@@ -28,7 +28,7 @@ def saveToDB(data):
 def saveToFile(data):
 	time_stamp = str(time.strftime('%Y-%m-%d %H:%M:%S ,', time.localtime()))
 	with open(FILE_NAME,'a') as f:
-		f.writelines(time_stamp + str('%s, %s, %s' %(data[0], data[1]))) 
+		f.writelines(time_stamp + str('%s, %s' %(data[0], data[1])) + '\n') 
 		f.close()
 		
 def readFromDB():
