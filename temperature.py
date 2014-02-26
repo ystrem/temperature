@@ -4,14 +4,15 @@ import glob
 import time
 import sqlite3 as lite
 
-os.system('modprobe w1-gpio')
-os.system('modprobe w1-therm')
+#os.system('modprobe w1-gpio')
+#os.system('modprobe w1-therm')
 
-thermometers = ['28-0000035ac85e','28-0000035acb40']
-temperatures = []
-base_dir = '/sys/bus/w1/devices/'
-device_file = '/w1_slave'
+#thermometers = ['28-0000035ac85e','28-0000035acb40']
+#temperatures = []
+#base_dir = '/sys/bus/w1/devices/'
+#device_file = '/w1_slave'
 DB_NAME = 't.db'
+FILE_NAME = "t.log"
 
 def saveToDB(data):
 	con = lite.connect(DB_NAME)
@@ -24,6 +25,12 @@ def saveToDB(data):
 		
 		con.commit()
 
+def saveToFile(data):
+	time_stamp = str(time.strftime('%Y-%m-%d %H:%M:%S ,', time.localtime()))
+	with open(FILE_NAME,'a') as f:
+		f.writelines(time_stamp + str('%s, %s, %s' %(data[0], data[1]))) 
+		f.close()
+		
 def readFromDB():
 	temp = []
 	con = lite.connect(DB_NAME)
@@ -54,12 +61,12 @@ def temperature():
 				temperature = float(temp[1][-1][2:]) / 1000
 				temperatures.append(temperature)
 			f.close()
-			print 'File is closed = ', f.closed
+			#print 'File is closed = ', f.closed
 		
 	return temperatures
-
-
-		
+	
 if __name__ == '__main__':
-	saveToDB(temperature())
+	temp = temperature()
+	saveToDB(temp)
+	saveToFile(temp)
 	#readFromDB()	
