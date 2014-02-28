@@ -4,7 +4,8 @@
   src="dygraph-combined.js"></script>
 </head>
 <body>
-<div id="graphdiv3"></div>
+<div id="graphdiv3"
+  style="width:600px; height:600px;"></div>
 <script type="text/javascript">
   g3 = new Dygraph(
     document.getElementById("graphdiv3"),
@@ -13,6 +14,7 @@
       title: 'KITCHEN',
       rollPeriod: 7,
       showRoller: true,
+      showRangeSelector: true,
       ylabel: 'Temperature [C]'
     }
   );
