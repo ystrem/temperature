@@ -19,5 +19,5 @@ pi@raspberrypi ~/temperature $ crontab -e
 
 To the bottom of the file add this line.
 
-*/1  *    * * *   pi      python /home/pi/temperature/temperature.py
+*/5  *    * * *   pi     cd temperature && python /home/pi/temperature/temperature.py
 
