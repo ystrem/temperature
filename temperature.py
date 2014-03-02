@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 import os
+import commands
 import glob
 import time
 import sqlite3 as lite
@@ -11,8 +12,9 @@ thermometers = ['28-0000035ac85e','28-0000035acb40']
 temperatures = []
 base_dir = '/sys/bus/w1/devices/'
 device_file = '/w1_slave'
-DB_NAME = 't.db'
-FILE_NAME = "t.log"
+path = commands.getoutput('pwd')
+DB_NAME = path + '/temperature/t.db'
+FILE_NAME = path + '/temperature/t.log'
 
 def saveToDB(data):
 	con = lite.connect(DB_NAME)
